@@ -3,7 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSlinger: Ceiling Swing</title>
+    <title>WebSlinger: Ceiling Swing | 웹슬링어: 실링 스윙 물리기반 게임</title>
+  
+  <!-- SEO Standard Meta Tags -->
+  <meta name="description" content="웹슬링어: 실링 스윙(WebSlinger)은 PC 웹 브라우저 기반의 정밀 물리 진자 운동 거미줄 스윙 플랫포머 게임입니다. 거미가 되어 천장에 거미줄을 발사하고 진자 운동 가속도를 이용해 장애물을 피해 목적지까지 기동하세요!">
+  <meta name="keywords" content="웹슬링어, WebSlinger, 거미 게임, 거미줄 스윙 게임, 물리 게임, 진자운동 게임, HTML5 게임, HTML5 Canvas, 바닐라JS 게임, 플랫포머 게임, 웹게임 추천, 하제넷, HajeNet">
+  <meta name="author" content="HajeNet">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://hajenet.github.io/spider-new-game/">
+
+  <!-- Open Graph (OG) Tags (for KakaoTalk, Facebook, Slack previews) -->
+  <meta property="og:title" content="WebSlinger: Ceiling Swing | 웹슬링어: 실링 스윙">
+  <meta property="og:description" content="천장에 거미줄을 쏘고 흔들리며 목적지에 도달하는 정교한 물리기반 거미 액션 플랫포머 웹게임! 지금 브라우저에서 무료로 즐겨보세요.">
+  <meta property="og:image" content="https://hajenet.github.io/spider-new-game/images/first_scene.png">
+  <meta property="og:url" content="https://hajenet.github.io/spider-new-game/">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WebSlinger: Ceiling Swing">
+  <meta name="twitter:description" content="거미가 되어 펼치는 정교한 물리 기반 진자운동 스윙 액션 게임! 웹 브라우저에서 바로 플레이하세요.">
+  <meta name="twitter:image" content="https://hajenet.github.io/spider-new-game/images/first_scene.png">
+
+  <!-- GEO (Generative Engine Optimization) JSON-LD Structured Data Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "WebSlinger: Ceiling Swing",
+    "description": "웹슬링어는 HTML5 Canvas와 Vanilla JS로 구현된 PC 웹 기반 물리 진자 운동 거미줄 스윙 플랫포머 게임입니다.",
+    "genre": ["Action Game", "Platformer", "Physics Game"],
+    "playMode": "SinglePlayer",
+    "applicationCategory": "Game",
+    "operatingSystem": "Web Browser",
+    "url": "https://hajenet.github.io/spider-new-game/",
+    "image": "https://hajenet.github.io/spider-new-game/images/first_scene.png",
+    "author": {
+      "@type": "Organization",
+      "name": "HajeNet",
+      "url": "https://hajenet.github.io/"
+    },
+    "gamePlatform": ["Web Browser", "PC", "Mobile"],
+    "about": {
+      "@type": "Thing",
+      "name": "Pendulum Physics"
+    }
+  }
+  </script>
   <!-- Google Fonts for Retro Console Feel -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -265,6 +311,48 @@
       </div>
     </div>
   </div>
+
+    <!-- Semantic Game Documentation & FAQ for Search Engines, AI Agents (GEO), and Voice Assistants (AEO) -->
+  <article class="sr-only">
+    <header>
+      <h1>WebSlinger: Ceiling Swing (웹슬링어: 실링 스윙) - 공식 가이드 및 FAQ</h1>
+      <p>웹슬링어는 HTML5 Canvas와 순수 자바스크립트(Vanilla JS)로 개발된 혁신적인 브라우저 기반 물리 스윙 플랫포머 게임입니다.</p>
+    </header>
+
+    <section>
+      <h2>🎮 게임 개요 및 핵심 기동 공식</h2>
+      <p>본 웹 기반 거미줄 타기 액션 게임은 직접 수동 구현한 <strong>진자 운동 공식(Pendulum Physics Formula)</strong>을 토대로 움직입니다. 거미 캐릭터가 천장(또는 전선, 나뭇가지 등 고정 영역)에 조준하여 거미줄을 발사하고 고정한 채 원형 궤도를 그리며 진동합니다. 이때 중력 가속도와 키보드 방향 조작을 통해 가속도를 증폭시킬 수 있습니다.</p>
+    </section>
+
+    <section>
+      <h2>🕹️ 웹슬링어 거미줄 게임 조작법 (Controls Guide)</h2>
+      <ul>
+        <li><strong>거미줄 조준 및 사격</strong>: 마우스를 이동하여 조준선을 일치시킨 뒤, 마우스 왼쪽 버튼을 클릭한 상태로 유지(Hold)하면 천장에 거미줄이 연결됩니다.</li>
+        <li><strong>스윙 릴리즈(놓기)</strong>: 마우스 클릭을 떼면 원심력을 보존한 관성 그대로 공중으로 체공 날아갑니다.</li>
+        <li><strong>줄 길이 조정 (당기고 늘리기)</strong>: 키보드 <code>W</code> / <code>S</code> 또는 상하 방향키(<code>▲</code> / <code>▼</code>)로 거미줄의 길이를 미세 제어할 수 있어 고도 제어가 가능합니다.</li>
+        <li><strong>반동 가속도 펌핑</strong>: 키보드 <code>A</code> / <code>D</code> 또는 좌우 방향키(<code>◀</code> / <code>▶</code>)로 흔들리는 스윙 궤도 방향에 탄력을 붙여 속도를 빠르게 만듭니다.</li>
+        <li><strong>스페이스 특수 대시 가속</strong>: <code>Space</code> 키를 눌러 전방 가속력을 일시 자동 보강할 수 있습니다.</li>
+        <li><strong>일시 정지</strong>: 게임 진행 중 <code>ESC</code> 또는 <code>P</code> 키를 누르면 일시 정지 메뉴가 팝업됩니다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>💡 자주 묻는 질문 (AdSense & Search FAQ - AEO 최적화)</h2>
+      <dl>
+        <dt>Q. 웹슬링어: 실링 스윙 게임은 모바일에서도 실행이 가능한가요?</dt>
+        <dd>A. 네, 모바일 기기에서도 완벽한 웹 브라우저 반응형을 지원합니다. 단, 마우스 조작 대신 터치 제스처 조작을 지원하며, 강력한 보안 프로토콜(HTTPS) 상에서 LocalStorage 세이브 기능이 차단 없이 안전하게 구동됩니다.</dd>
+        
+        <dt>Q. 1단계(다락방 스테이지) 난이도가 너무 높은데 극복 방법이 있나요?</dt>
+        <dd>A. 초보자 장벽 해소를 위해 1단계에 한정하여 저중력(GRAVITY = 0.09) 필터와 60% 다운된 수동 회전 민감도 보정 필터가 자동 장착되어 있습니다. 지속적인 조작 훈련 후 스테이지 곳곳의 Bug Points를 먹어 상점(Upgrade Shop)에서 성능을 업그레이드하면 훨씬 원활해집니다.</dd>
+        
+        <dt>Q. 웹슬링어 게임 내 광고는 어떤 방식으로 동작하나요?</dt>
+        <dd>A. 플레이어의 집중도를 해치는 어수선한 고정 배너 광고를 배제하고, 구글의 공식 H5 게임 광고 표준 규격인 Ad Placement API를 완벽 연동했습니다. 스테이지 클리어, 게임오버 후 재시도 등의 자연스러운 화면 전환점에 전체화면 전면 광고(Interstitial)가 부드럽게 흐르며, 이때 사운드와 게임 루프가 유기적으로 일시정지 동기화됩니다.</dd>
+        
+        <dt>Q. ads.txt 이중 방어 필터는 무엇을 위해 설정되어 있나요?</dt>
+        <dd>A. hajenet.github.io/spider-new-game/ 도메인에 승인된 광고 트래픽 권한을 보호하고, 제3자가 불법적으로 해당 게임의 자바스크립트 및 오디오 신디사이저 코드를 무단 도용하여 부정 트래픽 및 악의적 공격을 하는 행위를 구글 애드센스 차원에서 원천 방지하기 위함입니다.</dd>
+      </dl>
+    </section>
+  </article>
 
   <script src="js/audio.js"></script>
   <script src="js/physics.js"></script>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hajenet.github.io/spider-new-game/sitemap.xml
