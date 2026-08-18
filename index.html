@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSlinger: Ceiling Swing</title>
+  <!-- Google Fonts for Retro Console Feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Google H5 Games Ads (Ad Placement API) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544" crossorigin="anonymous"></script>
+  <script>
+    window.adsbygoogle = window.adsbygoogle || [];
+    const adBreak = adConfig = function(o) { adsbygoogle.push(o); }
+    adConfig({
+      preloadAdBreaks: 'on',
+      onLayoutBind: function(portraits) {
+        console.log('H5 Game Ads Layout Bound');
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="game-container" class="crt">
+    <!-- Canvas for rendering game elements -->
+    <canvas id="game-canvas" width="1024" height="576"></canvas>
+
+    <!-- Overlay Screens -->
+    <div id="ui-layer">
+      <!-- Title / Main Menu Screen -->
+      <div id="screen-main-menu" class="screen active">
+        <div class="title-container">
+          <h1 class="game-title">WEBSLINGER</h1>
+          <h2 class="game-subtitle">CEILING SWING</h2>
+        </div>
+        <div class="menu-buttons">
+          <button class="btn" id="btn-start">GAME START</button>
+          <button class="btn" id="btn-shop">UPGRADE SHOP</button>
+          <button class="btn" id="btn-leaderboard">LEADERBOARD</button>
+          <button class="btn" id="btn-settings">SETTINGS</button>
+          <button class="btn" id="btn-help">HOW TO PLAY</button>
+        </div>
+        <div class="footer-text">PRESS ANY KEY OR CLICK TO INTERACT</div>
+      </div>
+
+      <!-- Level Selector Screen -->
+      <div id="screen-level-select" class="screen">
+        <button class="btn-back btn-small">BACK</button>
+        <h2 class="screen-title">SELECT LEVEL</h2>
+        <div class="level-list">
+          <div class="level-card" id="level-1" data-level="1">
+            <div class="level-num">01</div>
+            <div class="level-name">THE ATTIC</div>
+            <div class="level-desc">Tutorial stage with flat ceiling and few obstacles.</div>
+            <div class="level-record">Best: --:--</div>
+          </div>
+          <div class="level-card locked" id="level-2" data-level="2">
+            <div class="level-num">02</div>
+            <div class="level-name">FOREST CANOPY</div>
+            <div class="level-desc">Uneven branch heights with patrolling hornets.</div>
+            <div class="level-record">Best: --:--</div>
+          </div>
+          <div class="level-card locked" id="level-3" data-level="3">
+            <div class="level-num">03</div>
+            <div class="level-name">CITY CABLES</div>
+            <div class="level-desc">High tension wires, electrical sparks & wind gusts.</div>
+            <div class="level-record">Best: --:--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upgrade Shop Screen -->
+      <div id="screen-shop" class="screen">
+        <button class="btn-back btn-small">BACK</button>
+        <h2 class="screen-title">UPGRADE SHOP</h2>
+        <div class="currency-display">
+          BUG POINTS: <span id="shop-bugs">0</span> BP
+        </div>
+        <div class="shop-grid">
+          <!-- Web Strength -->
+          <div class="shop-card" data-upgrade="webStrength">
+            <h3>WEB STRENGTH</h3>
+            <p class="upgrade-desc">Increases the maximum shooting range of the spider web.</p>
+            <div class="upgrade-level">Lv. <span class="level-val">1</span> / 5</div>
+            <div class="level-bar"><div class="level-fill" style="width: 20%;"></div></div>
+            <button class="btn btn-upgrade" id="buy-webStrength">UPGRADE (<span class="cost">100</span> BP)</button>
+          </div>
+          <!-- Swing Speed -->
+          <div class="shop-card" data-upgrade="swingSpeed">
+            <h3>SWING SPEED</h3>
+            <p class="upgrade-desc">Increases lateral acceleration force while swinging.</p>
+            <div class="upgrade-level">Lv. <span class="level-val">1</span> / 5</div>
+            <div class="level-bar"><div class="level-fill" style="width: 20%;"></div></div>
+            <button class="btn btn-upgrade" id="buy-swingSpeed">UPGRADE (<span class="cost">120</span> BP)</button>
+          </div>
+          <!-- Silk Elasticity -->
+          <div class="shop-card" data-upgrade="silkElasticity">
+            <h3>SILK ELASTICITY</h3>
+            <p class="upgrade-desc">Improves web springiness and bounce energy retention.</p>
+            <div class="upgrade-level">Lv. <span class="level-val">1</span> / 5</div>
+            <div class="level-bar"><div class="level-fill" style="width: 20%;"></div></div>
+            <button class="btn btn-upgrade" id="buy-silkElasticity">UPGRADE (<span class="cost">150</span> BP)</button>
+          </div>
+          <!-- Shield -->
+          <div class="shop-card" data-upgrade="shield">
+            <h3>NANOSHIELD</h3>
+            <p class="upgrade-desc">Protects against a single obstacle impact (max 3 charges).</p>
+            <div class="upgrade-level">Charges: <span class="level-val">0</span> / 3</div>
+            <div class="level-bar"><div class="level-fill" style="width: 0%;"></div></div>
+            <button class="btn btn-upgrade" id="buy-shield">BUY CHARGE (<span class="cost">80</span> BP)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard Screen -->
+      <div id="screen-leaderboard" class="screen">
+        <button class="btn-back btn-small">BACK</button>
+        <h2 class="screen-title">LEADERBOARD</h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="1">Lvl 1</button>
+          <button class="tab-btn" data-tab="2">Lvl 2</button>
+          <button class="tab-btn" data-tab="3">Lvl 3</button>
+        </div>
+        <div class="leaderboard-container">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>RANK</th>
+                <th>NAME</th>
+                <th>TIME</th>
+                <th>POINTS</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-data">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Screen -->
+      <div id="screen-settings" class="screen">
+        <button class="btn-back btn-small">BACK</button>
+        <h2 class="screen-title">SETTINGS</h2>
+        <div class="settings-list">
+          <div class="setting-item">
+            <span class="setting-label">BGM VOLUME</span>
+            <input type="range" id="slider-bgm" min="0" max="100" value="50">
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">SFX VOLUME</span>
+            <input type="range" id="slider-sfx" min="0" max="100" value="70">
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">GRAPHICS QUALITY</span>
+            <button class="btn btn-toggle" id="btn-graphics">HIGH</button>
+          </div>
+          <div class="setting-item">
+            <button class="btn btn-danger" id="btn-reset-data">RESET ALL DATA</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help / Controls Screen -->
+      <div id="screen-help" class="screen">
+        <button class="btn-back btn-small">BACK</button>
+        <h2 class="screen-title">HOW TO PLAY</h2>
+        <div class="help-content">
+          <div class="help-section">
+            <h3>🕹️ MOVEMENT & SWING</h3>
+            <ul>
+              <li><strong>Spacebar (Hold):</strong> Auto-aim and swing from ceiling</li>
+              <li><strong>Spacebar (Release):</strong> Release web to fly forward</li>
+              <li><strong>W / S (or ↑ / ↓):</strong> Retract / Extend web length</li>
+              <li><strong>A / D (or ← / →):</strong> Pump legs to gain extra momentum (Auto-pumps if idle!)</li>
+            </ul>
+          </div>
+          <div class="help-section">
+            <h3>⚡ SKILLS & GOALS</h3>
+            <ul>
+              <li><strong>Left Mouse Click / Shift:</strong> Trigger Dash (boost in direction of mouse)</li>
+              <li><strong>Collect Flies (Bug Points):</strong> Earn currency for the Upgrade Shop</li>
+              <li><strong>Avoid Obstacles:</strong> Spikes, hornets, and electrical shocks will drain HP!</li>
+              <li><strong>Goal (Golden Web):</strong> Reach the end of the level to win!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Screen (Visible in-game) -->
+      <div id="screen-hud" class="hud-container">
+        <div class="hud-left">
+          <div class="hud-stat">
+            <span class="hud-label">HP</span>
+            <div class="hud-bar-bg hp-bar"><div class="hud-bar-fill" id="hud-hp-fill" style="width: 100%;"></div></div>
+          </div>
+          <div class="hud-stat">
+            <span class="hud-label">SHIELD</span>
+            <div class="shield-charges" id="hud-shield-charges">
+              <!-- Lit indicators -->
+            </div>
+          </div>
+        </div>
+        <div class="hud-center">
+          <div class="level-indicator" id="hud-level-name">THE ATTIC</div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-text">TIME: <span id="hud-time">00:00.00</span></div>
+          <div class="hud-text">BP: <span id="hud-bugs">0000</span></div>
+        </div>
+      </div>
+
+      <!-- Pause Screen Overlay -->
+      <div id="screen-pause" class="overlay-screen">
+        <h2 class="paused-title">PAUSED</h2>
+        <div class="menu-buttons">
+          <button class="btn" id="btn-resume">RESUME</button>
+          <button class="btn" id="btn-restart">RESTART</button>
+          <button class="btn" id="btn-quit">QUIT TO MENU</button>
+        </div>
+      </div>
+
+      <!-- Level Success Screen Overlay -->
+      <div id="screen-success" class="overlay-screen">
+        <h2 class="victory-title">LEVEL CLEAR</h2>
+        <div class="stats-panel">
+          <div class="stat-row"><span>CLEAR TIME:</span> <span id="success-time">00:00.00</span></div>
+          <div class="stat-row"><span>BUGS CAUGHT:</span> <span id="success-bugs">00</span></div>
+          <div class="stat-row"><span>BONUS BP:</span> <span id="success-bonus">+100 BP</span></div>
+          <div class="stat-row grade-row"><span>RANK:</span> <span id="success-rank">S</span></div>
+        </div>
+        <div class="menu-buttons">
+          <button class="btn" id="btn-next-level">NEXT LEVEL</button>
+          <button class="btn" id="btn-success-shop">UPGRADE SHOP</button>
+          <button class="btn" id="btn-success-menu">MAIN MENU</button>
+        </div>
+      </div>
+
+      <!-- High Score Name Input Screen Overlay -->
+      <div id="screen-highscore-input" class="overlay-screen">
+        <h2 class="victory-title">NEW HIGH SCORE!</h2>
+        <p class="rank-notice">Rank #<span id="new-rank-pos">1</span> on Leaderboard!</p>
+        <div class="name-input-container">
+          <p>ENTER INITIALS:</p>
+          <div class="initials-wrapper">
+            <input type="text" id="input-initial-1" maxlength="1" class="initial-box" value="A" autofocus>
+            <input type="text" id="input-initial-2" maxlength="1" class="initial-box" value="A">
+            <input type="text" id="input-initial-3" maxlength="1" class="initial-box" value="A">
+          </div>
+        </div>
+        <button class="btn" id="btn-submit-score">SUBMIT RECORD</button>
+      </div>
+
+      <!-- Game Over Screen Overlay -->
+      <div id="screen-gameover" class="overlay-screen">
+        <h2 class="gameover-title">SPIDER ELIMINATED</h2>
+        <p class="gameover-desc" id="gameover-reason">Collided with electrical trap</p>
+        <div class="menu-buttons">
+          <button class="btn" id="btn-retry">TRY AGAIN</button>
+          <button class="btn" id="btn-gameover-shop">UPGRADE SHOP</button>
+          <button class="btn" id="btn-gameover-menu">MAIN MENU</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/audio.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/spider.js"></script>
+  <script src="js/UI.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
