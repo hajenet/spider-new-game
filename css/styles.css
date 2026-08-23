@@ -529,6 +529,16 @@ body {
   color: #000;
 }
 
+.setting-help {
+  width: min(420px, 100%);
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-modern);
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: right;
+}
+
 .btn-danger {
   border-color: var(--danger-color);
   color: var(--danger-color);
@@ -816,4 +826,203 @@ body {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+/* Mobile shell and touch controls */
+#game-container {
+  width: min(1024px, 100vw);
+  height: min(576px, 56.25vw);
+  aspect-ratio: 16 / 9;
+}
+
+#game-canvas,
+#ui-layer {
+  touch-action: none;
+}
+
+.input-mode-select {
+  min-width: 180px;
+  min-height: 42px;
+  padding: 8px 12px;
+  color: var(--text-color);
+  background: #0f172a;
+  border: 2px solid var(--secondary-color);
+  border-radius: 4px;
+  font-family: var(--font-modern);
+  font-weight: 700;
+}
+
+.mobile-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: none;
+  pointer-events: none;
+}
+
+body.touch-mode.gameplay-active .mobile-controls {
+  display: block;
+}
+
+.touch-hud-button,
+.touch-action-button {
+  appearance: none;
+  border: 2px solid rgba(125, 211, 252, 0.8);
+  color: #e0f2fe;
+  background: rgba(7, 24, 39, 0.82);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.18);
+  font-family: var(--font-modern);
+  font-weight: 900;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-hud-button {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  pointer-events: auto;
+  font-size: 18px;
+}
+
+#touch-pause { right: max(18px, env(safe-area-inset-right)); }
+#touch-hint { right: max(76px, calc(env(safe-area-inset-right) + 58px)); }
+
+.touch-stick {
+  position: absolute;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: clamp(108px, 18vw, 150px);
+  height: clamp(108px, 18vw, 150px);
+  border: 3px solid rgba(96, 165, 250, 0.7);
+  border-radius: 50%;
+  background: rgba(7, 24, 39, 0.48);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.touch-stick-ring {
+  position: absolute;
+  inset: 24%;
+  border: 2px solid rgba(125, 211, 252, 0.5);
+  border-radius: 50%;
+}
+
+.touch-stick-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  height: 42%;
+  border: 3px solid #7dd3fc;
+  border-radius: 50%;
+  background: rgba(29, 79, 115, 0.95);
+  transform: translateX(0);
+  transform-origin: center;
+  margin: -21% 0 0 -21%;
+}
+
+.touch-action-cluster {
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.touch-action-button { pointer-events: auto; }
+
+.touch-dash-button {
+  width: clamp(72px, 12vw, 106px);
+  height: clamp(72px, 12vw, 106px);
+  border-color: #fbbf24;
+  border-radius: 50%;
+  color: #fef3c7;
+  font-size: clamp(12px, 2vw, 17px);
+}
+
+.touch-dash-button.pressed,
+.touch-action-button:active,
+.touch-hud-button:active {
+  transform: scale(0.94);
+  background: rgba(22, 61, 82, 0.98);
+}
+
+.touch-web-length {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.touch-length-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 22px;
+}
+
+.mobile-orientation-lock {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(2, 6, 12, 0.97);
+  pointer-events: auto;
+}
+
+body.portrait-lock.gameplay-active .mobile-orientation-lock {
+  display: flex;
+}
+
+.orientation-card {
+  max-width: 330px;
+  padding: 28px;
+  border: 2px solid var(--secondary-color);
+  border-radius: 12px;
+  background: #0f172a;
+  text-align: center;
+  box-shadow: 0 0 26px var(--secondary-glow);
+}
+
+.orientation-icon {
+  margin-bottom: 18px;
+  color: var(--secondary-color);
+  font-size: 54px;
+}
+
+.orientation-card h2 {
+  margin-bottom: 12px;
+  color: var(--primary-color);
+  font-family: var(--font-retro);
+  font-size: 17px;
+}
+
+.orientation-card p {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (pointer: coarse), (hover: none) {
+  .btn,
+  .tab-btn,
+  .btn-toggle,
+  .btn-back {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hud-container { padding: 8px 12px; }
+  .hud-bar-bg { width: clamp(82px, 22vw, 150px); }
+  .hud-label, .hud-text { font-size: 8px; }
+  .level-indicator { font-size: 8px; padding: 4px 7px; }
+  .settings-list { width: 92%; }
 }

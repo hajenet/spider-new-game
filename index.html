@@ -6,7 +6,7 @@
     <title>WebSlinger: Ceiling Swing | 웹슬링어: 실링 스윙 물리기반 게임</title>
   
   <!-- SEO Standard Meta Tags -->
-  <meta name="description" content="웹슬링어: 실링 스윙(WebSlinger)은 PC 웹 브라우저 기반의 정밀 물리 진자 운동 거미줄 스윙 플랫포머 게임입니다. 거미가 되어 천장에 거미줄을 발사하고 진자 운동 가속도를 이용해 장애물을 피해 목적지까지 기동하세요!">
+  <meta name="description" content="웹슬링어: 실링 스윙(WebSlinger)은 PC와 모바일 브라우저에서 즐기는 정밀 물리 진자 운동 거미줄 스윙 플랫포머 게임입니다. 거미가 되어 천장에 거미줄을 발사하고 장애물을 피해 목적지까지 기동하세요!">
   <meta name="keywords" content="웹슬링어, WebSlinger, 거미 게임, 거미줄 스윙 게임, 물리 게임, 진자운동 게임, HTML5 게임, HTML5 Canvas, 바닐라JS 게임, 플랫포머 게임, 웹게임 추천, 하제넷, HajeNet">
   <meta name="author" content="HajeNet">
   <meta name="robots" content="index, follow">
@@ -31,7 +31,7 @@
     "@context": "https://schema.org",
     "@type": "VideoGame",
     "name": "WebSlinger: Ceiling Swing",
-    "description": "웹슬링어는 HTML5 Canvas와 Vanilla JS로 구현된 PC 웹 기반 물리 진자 운동 거미줄 스윙 플랫포머 게임입니다.",
+    "description": "웹슬링어는 HTML5 Canvas와 Vanilla JS로 구현된 PC/모바일 브라우저 물리 진자 운동 거미줄 스윙 플랫포머 게임입니다.",
     "genre": ["Action Game", "Platformer", "Physics Game"],
     "playMode": "SinglePlayer",
     "applicationCategory": "Game",
@@ -55,6 +55,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/level_select.css">
   <!-- Google H5 Games Ads (Ad Placement API) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8293430621295697" crossorigin="anonymous"></script>
   <script>
@@ -94,26 +95,13 @@
       <!-- Level Selector Screen -->
       <div id="screen-level-select" class="screen">
         <button class="btn-back btn-small">BACK</button>
-        <h2 class="screen-title">SELECT LEVEL</h2>
-        <div class="level-list">
-          <div class="level-card" id="level-1" data-level="1">
-            <div class="level-num">01</div>
-            <div class="level-name">THE ATTIC</div>
-            <div class="level-desc">Tutorial stage with flat ceiling and few obstacles.</div>
-            <div class="level-record">Best: --:--</div>
-          </div>
-          <div class="level-card locked" id="level-2" data-level="2">
-            <div class="level-num">02</div>
-            <div class="level-name">FOREST CANOPY</div>
-            <div class="level-desc">Uneven branch heights with patrolling hornets.</div>
-            <div class="level-record">Best: --:--</div>
-          </div>
-          <div class="level-card locked" id="level-3" data-level="3">
-            <div class="level-num">03</div>
-            <div class="level-name">CITY CABLES</div>
-            <div class="level-desc">High tension wires, electrical sparks & wind gusts.</div>
-            <div class="level-record">Best: --:--</div>
-          </div>
+        <h2 class="screen-title" id="level-select-title">SELECT STAGE</h2>
+        <div class="level-list" id="level-list">
+          <!-- Dynamically populated -->
+        </div>
+        <div class="pagination">
+          <button class="btn btn-small" id="btn-prev-stage">PREV</button>
+          <button class="btn btn-small" id="btn-next-stage">NEXT</button>
         </div>
       </div>
 
@@ -204,6 +192,18 @@
             <button class="btn btn-toggle" id="btn-graphics">HIGH</button>
           </div>
           <div class="setting-item">
+            <label class="setting-label" for="select-input-mode">INPUT MODE</label>
+            <select id="select-input-mode" class="input-mode-select">
+              <option value="auto">AUTO</option>
+              <option value="pc">PC CONTROLS</option>
+              <option value="touch">TOUCH CONTROLS</option>
+            </select>
+            <p class="setting-help">
+              AUTO detects pointer and hover capabilities. Touch-first devices or touch input show touch controls;
+              mouse input switches to PC controls. User-Agent is not used.
+            </p>
+          </div>
+          <div class="setting-item">
             <button class="btn btn-danger" id="btn-reset-data">RESET ALL DATA</button>
           </div>
         </div>
@@ -226,7 +226,7 @@
           <div class="help-section">
             <h3>⚡ SKILLS & GOALS</h3>
             <ul>
-              <li><strong>Left Mouse Click / Shift:</strong> Trigger Dash (boost in direction of mouse)</li>
+              <li><strong>Left Mouse Click / Shift / DASH:</strong> Trigger Dash (boost in aim direction)</li>
               <li><strong>Collect Flies (Bug Points):</strong> Earn currency for the Upgrade Shop</li>
               <li><strong>Avoid Obstacles:</strong> Spikes, hornets, and electrical shocks will drain HP!</li>
               <li><strong>Goal (Golden Web):</strong> Reach the end of the level to win!</li>
@@ -309,6 +309,33 @@
           <button class="btn" id="btn-gameover-menu">MAIN MENU</button>
         </div>
       </div>
+
+      <!-- Mobile gameplay controls. Pointer Events are handled by js/input.js. -->
+      <div id="mobile-controls" class="mobile-controls" aria-hidden="true">
+        <button id="touch-pause" class="touch-hud-button" aria-label="Pause">Ⅱ</button>
+        <button id="touch-hint" class="touch-hud-button touch-hint-button" aria-label="Toggle hints">?</button>
+
+        <div id="touch-stick" class="touch-stick" aria-label="Move left and right">
+          <div class="touch-stick-ring"></div>
+          <div id="touch-stick-knob" class="touch-stick-knob"></div>
+        </div>
+
+        <div class="touch-action-cluster">
+          <button id="touch-dash" class="touch-action-button touch-dash-button" aria-label="Dash">DASH</button>
+          <div class="touch-web-length" aria-label="Web length">
+            <button class="touch-action-button touch-length-button" data-web-length="-1" aria-label="Retract web">−</button>
+            <button class="touch-action-button touch-length-button" data-web-length="1" aria-label="Extend web">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="mobile-orientation-lock" class="mobile-orientation-lock" aria-hidden="true">
+        <div class="orientation-card">
+          <div class="orientation-icon">↔</div>
+          <h2>ROTATE DEVICE</h2>
+          <p>Turn your device sideways to swing.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -327,11 +354,12 @@
     <section>
       <h2>🕹️ 웹슬링어 거미줄 게임 조작법 (Controls Guide)</h2>
       <ul>
-        <li><strong>거미줄 조준 및 사격</strong>: 마우스를 이동하여 조준선을 일치시킨 뒤, 마우스 왼쪽 버튼을 클릭한 상태로 유지(Hold)하면 천장에 거미줄이 연결됩니다.</li>
-        <li><strong>스윙 릴리즈(놓기)</strong>: 마우스 클릭을 떼면 원심력을 보존한 관성 그대로 공중으로 체공 날아갑니다.</li>
+        <li><strong>거미줄 조준 및 사격</strong>: PC는 마우스로 조준한 뒤 <code>Space</code>를 누르고, 모바일은 오른쪽 게임 영역을 드래그하며 길게 누르면 천장에 거미줄이 연결됩니다.</li>
+        <li><strong>스윙 릴리즈(놓기)</strong>: PC는 <code>Space</code>를 떼고, 모바일은 터치 손가락을 떼면 관성을 보존한 채 공중으로 날아갑니다.</li>
         <li><strong>줄 길이 조정 (당기고 늘리기)</strong>: 키보드 <code>W</code> / <code>S</code> 또는 상하 방향키(<code>▲</code> / <code>▼</code>)로 거미줄의 길이를 미세 제어할 수 있어 고도 제어가 가능합니다.</li>
         <li><strong>반동 가속도 펌핑</strong>: 키보드 <code>A</code> / <code>D</code> 또는 좌우 방향키(<code>◀</code> / <code>▶</code>)로 흔들리는 스윙 궤도 방향에 탄력을 붙여 속도를 빠르게 만듭니다.</li>
-        <li><strong>스페이스 특수 대시 가속</strong>: <code>Space</code> 키를 눌러 전방 가속력을 일시 자동 보강할 수 있습니다.</li>
+        <li><strong>DASH</strong>: PC는 마우스 왼쪽 클릭 또는 <code>Shift</code>, 모바일은 <code>DASH</code> 버튼으로 조준 방향에 순간 가속합니다.</li>
+        <li><strong>모바일 좌우 조작</strong>: 모바일에서는 왼쪽 가상 스틱으로 좌우 반동을 추가할 수 있습니다.</li>
         <li><strong>일시 정지</strong>: 게임 진행 중 <code>ESC</code> 또는 <code>P</code> 키를 누르면 일시 정지 메뉴가 팝업됩니다.</li>
       </ul>
     </section>
@@ -356,7 +384,9 @@
 
   <script src="js/audio.js"></script>
   <script src="js/physics.js"></script>
+  <script src="js/levelGenerator.js"></script>
   <script src="js/levels.js"></script>
+  <script src="js/input.js"></script>
   <script src="js/spider.js"></script>
   <script src="js/UI.js"></script>
   <script src="js/main.js"></script>

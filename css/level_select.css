@@ -1,0 +1,32 @@
+.level-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.level-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.level-card:hover {
+  transform: scale(1.05);
+  border-color: #39ff14;
+}
+
+.level-card.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
